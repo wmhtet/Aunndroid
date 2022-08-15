@@ -26,7 +26,7 @@ class UserListRepository(application: Application) : Repository(application) {
                 user?.let { playlist.add(user) }
             } else {
                 val list = network.getUserList()
-                playlist.addAll(list)
+                list?.let { playlist.addAll(list) }
             }
             database.clearAllTables()
             database.userDao.insertAll(asDatabaseModelUserList(playlist))

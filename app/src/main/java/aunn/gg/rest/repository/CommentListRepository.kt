@@ -23,7 +23,7 @@ class CommentListRepository(application: Application, postId: String) : Reposito
         withContext(Dispatchers.IO + exceptionHandler) {
             val playlist = network.getCommentList(postId)
             // database.clearAllTables()
-            database.commentDao.insertAll(asDatabaseModelCommentList(playlist))
+            playlist?.let{database.commentDao.insertAll(asDatabaseModelCommentList(playlist))}
         }
     }
 }

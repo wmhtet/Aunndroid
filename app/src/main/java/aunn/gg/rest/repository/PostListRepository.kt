@@ -21,8 +21,10 @@ class PostListRepository(application: Application) : Repository(application) {
     suspend fun refreshPostList() {
         withContext(Dispatchers.IO + exceptionHandler) {
             val playlist = network.getPostList()
-            database.clearAllTables()
-            database.postDao.insertAll(asDatabaseModelPostList(playlist))
+            playlist?.let {
+                database.clearAllTables()
+                database.postDao.insertAll(asDatabaseModelPostList(playlist))
+            }
         }
     }
 }

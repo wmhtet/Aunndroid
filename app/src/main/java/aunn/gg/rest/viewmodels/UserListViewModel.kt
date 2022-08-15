@@ -16,7 +16,7 @@ class UserListViewModel(application: Application, userId: String) : AbstractView
         refreshDataFromRepository(userId)
     }
 
-    val userList = userListRepository.userList
+    private val userList = userListRepository.userList
 
     private fun refreshDataFromRepository(userId: String) {
         viewModelScope.launch {

@@ -6,8 +6,8 @@ import aunn.gg.rest.domain.User
 
 interface RestClient {
     suspend fun fetch(url: String, parameters: Map<String, String>?): String?
-    suspend fun getPostList(): List<Post>
+    suspend fun getPostList(): List<Post>?
     suspend fun getUser(userId: String): User?
-    suspend fun getUserList(): List<User>
-    suspend fun getCommentList(postId: String): List<Comment>
+    suspend fun getUserList(): List<User>?
+    suspend fun getCommentList(postId: String): List<Comment>?
 }

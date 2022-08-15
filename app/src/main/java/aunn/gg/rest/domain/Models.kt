@@ -26,12 +26,13 @@ data class Comment(
 )
 
 fun getPostsFromJson(jsonString: String): List<Post> {
-    Log.d(TAG, "updatePosts")
+    Log.d(TAG, "getPostsFromJson $jsonString")
     val posts: ArrayList<Post> = ArrayList()
+    // println(jsonString)
     val jsonArray = JSONTokener(jsonString).nextValue() as JSONArray
     for (i in 0 until jsonArray.length()) {
-        val id = jsonArray.getJSONObject(i).getString("id")
-        val userId = jsonArray.getJSONObject(i).getString("userId")
+        val id = jsonArray.getJSONObject(i).getInt("id").toString()
+        val userId = jsonArray.getJSONObject(i).getInt("userId").toString()
         val title = jsonArray.getJSONObject(i).getString("title")
         val body = jsonArray.getJSONObject(i).getString("body")
         posts.add(Post(id, userId, title, body))
@@ -44,8 +45,8 @@ fun getCommentsFromJson(jsonString: String): List<Comment> {
     val comments: ArrayList<Comment> = ArrayList()
     val jsonArray = JSONTokener(jsonString).nextValue() as JSONArray
     for (i in 0 until jsonArray.length()) {
-        val id = jsonArray.getJSONObject(i).getString("id")
-        val postId = jsonArray.getJSONObject(i).getString("postId")
+        val id = jsonArray.getJSONObject(i).getInt("id").toString()
+        val postId = jsonArray.getJSONObject(i).getInt("postId").toString()
         val name = jsonArray.getJSONObject(i).getString("name")
         val email = jsonArray.getJSONObject(i).getString("email")
         val body = jsonArray.getJSONObject(i).getString("body")
@@ -107,7 +108,7 @@ fun getUserFromJson(jsonString: String): User {
 }
 
 fun getUserFromJson(jsonObject: JSONObject): User {
-    val id = jsonObject.getString("id")
+    val id = jsonObject.getInt("id").toString()
     val name = jsonObject.getString("name")
     val username = jsonObject.getString("username")
     val email = jsonObject.getString("email")
