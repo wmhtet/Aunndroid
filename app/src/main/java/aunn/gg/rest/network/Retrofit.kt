@@ -1,6 +1,5 @@
 package aunn.gg.rest.network
 
-import android.util.Log
 import aunn.gg.rest.domain.Comment
 import aunn.gg.rest.domain.Post
 import aunn.gg.rest.domain.User
@@ -16,6 +15,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
+import timber.log.Timber
 import java.net.HttpURLConnection
 
 interface Service {
@@ -44,7 +44,6 @@ class Retrofit(hostName: String) : RestClient {
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
     private val service = retrofit.create(Service::class.java)
-    private val TAG: String? = Retrofit::class.simpleName
 
     override suspend fun fetch(url: String, parameters: Map<String, String>?): String? {
         val response = service.fetch(url)
@@ -53,7 +52,7 @@ class Retrofit(hostName: String) : RestClient {
     }
 
     override suspend fun getPostList(): List<Post>? {
-        // Log.d(TAG, this::getPostList.name)
+        // Log.d(this::getPostList.name)
         val response =  service.getPostList()
         throwNetworkError(response.code(), this::getPostList.name)
         return response.body()
@@ -72,7 +71,7 @@ class Retrofit(hostName: String) : RestClient {
     }
 
     override suspend fun getCommentList(postId: String): List<Comment>? {
-        Log.d(TAG, "${this::getCommentList.name} : $postId")
+        Timber.d("${this::getCommentList.name} : $postId")
         val response =  service.getComment(postId)
         throwNetworkError(response.code(), this::getCommentList.name)
         return response.body()
@@ -80,7 +79,7 @@ class Retrofit(hostName: String) : RestClient {
 
     private fun throwNetworkError(response_code:Int, method:String){
         if (response_code != HttpURLConnection.HTTP_OK){
-            Log.e(TAG, "$method : $response_code")
+            Timber.e("$method : $response_code")
             val networkError = "Network Error.".toResponseBody("plain/text".toMediaTypeOrNull())
             throw HttpException(Response.error<ResponseBody>(response_code, networkError))
         }

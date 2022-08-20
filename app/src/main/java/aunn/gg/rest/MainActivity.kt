@@ -2,20 +2,27 @@ package aunn.gg.rest
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import aunn.gg.rest.domain.Post
 import aunn.gg.rest.viewmodels.PostListViewModel
+import timber.log.Timber
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.simpleName
     private lateinit var lv: ListView
     private lateinit var viewModelAdapter: ArrayAdapter<Post>
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<PostListViewModel> { viewModelFactory }
+
+    /*
     private val viewModel: PostListViewModel by lazy {
         requireNotNull(this) {}
         ViewModelProvider(
@@ -23,9 +30,11 @@ class MainActivity : AppCompatActivity() {
             PostListViewModel.Factory(application)
         )[PostListViewModel::class.java]
     }
-
+*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (application as MyApplication).appComponent.postListComponent().create().inject(this)
+
         lv = ListView(this)
         setContentView(lv)
         lv.setOnItemClickListener { _, _, position, _ ->
@@ -38,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         lv.adapter = viewModelAdapter
         viewModel.postList.observe(this) { postList ->
             postList?.apply {
-                Log.d(TAG, "Update post list")
+                Timber.d("Update post list")
                 viewModelAdapter.clear()
                 viewModelAdapter.addAll(postList)
             }
@@ -49,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onNetworkError() {
-        if(!viewModel.isNetworkErrorShown.value!!) {
+        if (!viewModel.isNetworkErrorShown.value!!) {
             Toast.makeText(this, "$TAG Network Error", Toast.LENGTH_LONG).show()
             viewModel.onNetworkErrorShown()
         }

@@ -1,11 +1,10 @@
 package aunn.gg.rest.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-abstract class AbstractViewModel(application: Application) : AndroidViewModel(application) {
+abstract class AbstractViewModel : ViewModel() {
 
     protected var _eventNetworkError = MutableLiveData<Boolean>(false)
     val eventNetworkError: LiveData<Boolean> get() = _eventNetworkError

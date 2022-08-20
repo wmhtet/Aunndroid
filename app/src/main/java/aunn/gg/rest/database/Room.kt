@@ -20,6 +20,7 @@ abstract class PostListDatabase : RoomDatabase() {
 
 private lateinit var postListDatabase: PostListDatabase
 
+
 fun getPostListDatabase(context: Context): PostListDatabase {
     synchronized(PostListDatabase::class.java) {
         if (!::postListDatabase.isInitialized) {
@@ -39,7 +40,7 @@ fun getPostListDatabase(context: Context): PostListDatabase {
 @Dao
 interface CommentDao {
     @Query("select * from databaseComment where postId == :postId")
-    fun getComments(postId:String): LiveData<List<DatabaseComment>>
+    fun getComments(postId: String): LiveData<List<DatabaseComment>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(Comments: List<DatabaseComment>)

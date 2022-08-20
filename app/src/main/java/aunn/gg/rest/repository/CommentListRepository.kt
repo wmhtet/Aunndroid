@@ -1,6 +1,6 @@
 package aunn.gg.rest.repository
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import aunn.gg.rest.database.asDatabaseModelCommentList
@@ -11,8 +11,8 @@ import aunn.gg.rest.network.NetworkCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class CommentListRepository(application: Application, postId: String) : Repository(application) {
-    private val database = getCommentListDatabase(application)
+class CommentListRepository(context: Context, postId: String) : Repository(context) {
+    private val database = getCommentListDatabase(context)
     private val network = NetworkCall()
     val commentList: LiveData<List<Comment>> =
         Transformations.map(database.commentDao.getComments(postId)) {
@@ -23,7 +23,7 @@ class CommentListRepository(application: Application, postId: String) : Reposito
         withContext(Dispatchers.IO + exceptionHandler) {
             val playlist = network.getCommentList(postId)
             // database.clearAllTables()
-            playlist?.let{database.commentDao.insertAll(asDatabaseModelCommentList(playlist))}
+            playlist?.let { database.commentDao.insertAll(asDatabaseModelCommentList(playlist)) }
         }
     }
 }

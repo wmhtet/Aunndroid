@@ -1,12 +1,10 @@
 package aunn.gg.rest.database
 
-import android.util.Log
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import aunn.gg.rest.domain.*
-
-const val TAG ="aunn.gg.rest.database"
+import timber.log.Timber
 
 @Entity
 data class DatabasePost constructor(
@@ -18,7 +16,7 @@ data class DatabasePost constructor(
 )
 
 fun List<DatabasePost>.asDomainModelPostList(): List<Post> {
-    Log.d(TAG, "asDomainModelPostList")
+    Timber.d("asDomainModelPostList")
     return map { Post(id = it.id, userId = it.userId, title = it.title, body = it.body) }
 }
 

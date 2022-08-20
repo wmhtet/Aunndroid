@@ -1,6 +1,6 @@
 package aunn.gg.rest.viewmodels
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,10 +8,9 @@ import aunn.gg.rest.repository.CommentListRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class CommentListViewModel(application: Application, postId: String) :
-    AbstractViewModel(application) {
-
-    private val commentListRepository = CommentListRepository(application, postId)
+class CommentListViewModel(context: Context, postId: String) :
+    AbstractViewModel() {
+    private val commentListRepository = CommentListRepository(context, postId)
 
     init {
         refreshDataFromRepository(postId)
@@ -34,11 +33,11 @@ class CommentListViewModel(application: Application, postId: String) :
         }
     }
 
-    class Factory(val app: Application, val postId: String) : ViewModelProvider.Factory {
+    class Factory(val context: Context, val postId: String) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(CommentListViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return CommentListViewModel(app, postId) as T
+                return CommentListViewModel(context, postId) as T
             }
             throw IllegalArgumentException("Unable to construct viewModel")
         }

@@ -1,6 +1,6 @@
 package aunn.gg.rest.repository
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import aunn.gg.rest.database.asDatabaseModelUserList
@@ -11,8 +11,8 @@ import aunn.gg.rest.network.NetworkCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class UserListRepository(application: Application) : Repository(application) {
-    private val database = getUserListDatabase(application)
+class UserListRepository(context: Context) : Repository(context) {
+    private val database = getUserListDatabase(context)
     private val network = NetworkCall()
     val userList: LiveData<List<User>> = Transformations.map(database.userDao.getUsers()) {
         it.asDomainModelUserList()

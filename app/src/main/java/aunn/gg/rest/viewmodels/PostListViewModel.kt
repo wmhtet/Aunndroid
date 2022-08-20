@@ -1,18 +1,16 @@
 package aunn.gg.rest.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import aunn.gg.rest.repository.PostListRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
-class PostListViewModel(application: Application) : AbstractViewModel(application) {
+class PostListViewModel @Inject constructor(
+    private val postListRepository: PostListRepository
+) : AbstractViewModel() {
 
-    private val postListRepository =
-        PostListRepository(application) // check import for getDatabase method
-
+    //private val postListRepository = PostListRepository(application)
     init {
         refreshDataFromRepository()
     }
@@ -34,13 +32,15 @@ class PostListViewModel(application: Application) : AbstractViewModel(applicatio
         }
     }
 
-    class Factory(val app: Application) : ViewModelProvider.Factory {
+    /*
+    class Factory(val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(PostListViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return PostListViewModel(app) as T
+                return PostListViewModel(context) as T
             }
             throw IllegalArgumentException("Unable to construct viewModel")
         }
     }
+    */
 }

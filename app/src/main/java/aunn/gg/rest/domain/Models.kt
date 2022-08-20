@@ -1,12 +1,11 @@
 package aunn.gg.rest.domain
 
-import android.util.Log
 import com.squareup.moshi.JsonClass
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
+import timber.log.Timber
 
-private const val TAG = "aunn.gg.rest.domain"
 
 @JsonClass(generateAdapter = true)
 data class Post(
@@ -26,7 +25,7 @@ data class Comment(
 )
 
 fun getPostsFromJson(jsonString: String): List<Post> {
-    Log.d(TAG, "getPostsFromJson $jsonString")
+    Timber.d("getPostsFromJson ")
     val posts: ArrayList<Post> = ArrayList()
     // println(jsonString)
     val jsonArray = JSONTokener(jsonString).nextValue() as JSONArray
@@ -41,7 +40,7 @@ fun getPostsFromJson(jsonString: String): List<Post> {
 }
 
 fun getCommentsFromJson(jsonString: String): List<Comment> {
-    Log.d(TAG, "getCommentsFromJson")
+    Timber.d("getCommentsFromJson")
     val comments: ArrayList<Comment> = ArrayList()
     val jsonArray = JSONTokener(jsonString).nextValue() as JSONArray
     for (i in 0 until jsonArray.length()) {
@@ -89,7 +88,6 @@ fun getCompanyFromJson(jsonObject: JSONObject): Company {
     return Company(name, catchPhrase, bs)
 }
 
-
 @JsonClass(generateAdapter = true)
 data class User(
     val id: String,
@@ -121,9 +119,8 @@ fun getUserFromJson(jsonObject: JSONObject): User {
     return User(id, name, username, email, address, phone, website, company)
 }
 
-
 fun getUserListFromJson(jsonString: String): List<User> {
-    Log.d(TAG, "getUserListFromJson")
+    Timber.d("getUserListFromJson")
     val users: ArrayList<User> = ArrayList()
     val jsonArray = JSONTokener(jsonString).nextValue() as JSONArray
     for (i in 0 until jsonArray.length()) {

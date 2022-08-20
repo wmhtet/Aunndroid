@@ -1,7 +1,6 @@
 package aunn.gg.rest
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
@@ -9,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import aunn.gg.rest.domain.Comment
 import aunn.gg.rest.viewmodels.CommentListViewModel
+import timber.log.Timber
 
 class NextActivity : AppCompatActivity() {
     private lateinit var lv: ListView
+    private lateinit var id: String
     private lateinit var viewModelAdapter: ArrayAdapter<Comment>
     private lateinit var viewModel: CommentListViewModel
     private val TAG: String? = NextActivity::class.simpleName
@@ -19,14 +20,14 @@ class NextActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lv = ListView(this)
-        val id = intent.getStringExtra("postID")
-        Log.e(TAG, "onCreate : $id")
-        if (!id.isNullOrEmpty()) {
+        id = intent.getStringExtra("postID")!!
+        Timber.d("onCreate : $id")
+        if (id.isNotEmpty()) {
             viewModel = ViewModelProvider(
-                this, CommentListViewModel.Factory( application, id)
+                this, CommentListViewModel.Factory(applicationContext, id)
             )[CommentListViewModel::class.java]
-        }else{
-            Log.e(TAG, "No post_id")
+        } else {
+            Timber.e("No post_id")
             finishActivity(0)
         }
         setContentView(lv)
@@ -37,7 +38,7 @@ class NextActivity : AppCompatActivity() {
         lv.adapter = viewModelAdapter
         viewModel.commentList.observe(this) { commentList ->
             commentList?.apply {
-                Log.d(TAG, "Update comment list")
+                Timber.d("Update comment list")
                 viewModelAdapter.clear()
                 viewModelAdapter.addAll(commentList)
             }
@@ -48,7 +49,7 @@ class NextActivity : AppCompatActivity() {
     }
 
     private fun onNetworkError() {
-        if(!viewModel.isNetworkErrorShown.value!!) {
+        if (!viewModel.isNetworkErrorShown.value!!) {
             Toast.makeText(this, "$TAG Network Error", Toast.LENGTH_LONG).show()
             viewModel.onNetworkErrorShown()
         }

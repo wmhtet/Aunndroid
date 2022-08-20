@@ -1,12 +1,11 @@
 package aunn.gg.rest.network
 
-import android.util.Log
 import aunn.gg.rest.domain.Comment
 import aunn.gg.rest.domain.Post
 import aunn.gg.rest.domain.User
+import timber.log.Timber
 
-class NetworkCall(hostName:String = productionHostName) {
-    private val TAG: String? = NetworkCall::class.simpleName
+class NetworkCall(hostName: String = productionHostName) : RestClient {
     private val restClient: RestClient by lazy {
         if (change) {
             change = !change
@@ -17,24 +16,24 @@ class NetworkCall(hostName:String = productionHostName) {
         }
     }
 
-    suspend fun fetch(url: String, parameters: Map<String, String>?): String? {
+    override suspend fun fetch(url: String, parameters: Map<String, String>?): String? {
         return restClient.fetch(url, parameters)
     }
 
-    suspend fun getPostList(): List<Post>? {
+    override suspend fun getPostList(): List<Post>? {
         return restClient.getPostList()
     }
 
-    suspend fun getUser(userId: String): User? {
+    override suspend fun getUser(userId: String): User? {
         return restClient.getUser(userId)
     }
 
-    suspend fun getUserList(): List<User>? {
+    override suspend fun getUserList(): List<User>? {
         return restClient.getUserList()
     }
 
-    suspend fun getCommentList(postId: String): List<Comment>? {
-        Log.d(TAG, "${this::getCommentList.name} : ")
+    override suspend fun getCommentList(postId: String): List<Comment>? {
+        Timber.d("${this::getCommentList.name} : ")
         return restClient.getCommentList(postId)
     }
 
