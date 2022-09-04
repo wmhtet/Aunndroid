@@ -33,7 +33,7 @@ class NetworkCall(hostName: String = productionHostName) : RestClient {
     }
 
     override suspend fun getCommentList(postId: String): List<Comment>? {
-        Timber.d("${this::getCommentList.name} : ")
+        Timber.d("${this::getCommentList.name} : $postId")
         return restClient.getCommentList(postId)
     }
 

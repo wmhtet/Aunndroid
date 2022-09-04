@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Aunndroid</string>
+    <string name="title_activity_third">ThirdActivity</string>
+    <string name="postId">Post Id %1$s</string>
+    <string name="userId">User ID %1$s</string>
+    <string name="comment">Comments</string>
+    <string name="end_of_contents">You have read all the contents.</string>
+    <string name="send_email">Send email to %1$s</string>
+    <string name="regarding_subject">Regarding comment Id %1$s on post Id %2$s</string>
+    <string name="comment_id">Comment ID %1$s</string>
+    <string name="name_is">Name : %1$s</string>
 </resources>

@@ -1,13 +1,12 @@
 package aunn.gg.rest.viewmodels
 
-import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import aunn.gg.rest.repository.UserListRepository
 import kotlinx.coroutines.launch
-import java.io.IOException
+import timber.log.Timber
 
 class UserListViewModel(context: Context, userId: String) : AbstractViewModel() {
 
@@ -26,8 +25,9 @@ class UserListViewModel(context: Context, userId: String) : AbstractViewModel() 
                 _eventNetworkError.value = false
                 _isNetworkErrorShown.value = false
 
-            } catch (networkError: IOException) {
+            } catch (networkError: Exception) {
                 // Show a Toast error message and hide the progress bar.
+                Timber.e(networkError)
                 if (userList.value.isNullOrEmpty())
                     _eventNetworkError.value = true
             }

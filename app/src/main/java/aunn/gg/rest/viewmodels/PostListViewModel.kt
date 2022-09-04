@@ -3,7 +3,7 @@ package aunn.gg.rest.viewmodels
 import androidx.lifecycle.viewModelScope
 import aunn.gg.rest.repository.PostListRepository
 import kotlinx.coroutines.launch
-import java.io.IOException
+import timber.log.Timber
 import javax.inject.Inject
 
 class PostListViewModel @Inject constructor(
@@ -24,8 +24,9 @@ class PostListViewModel @Inject constructor(
                 _eventNetworkError.value = false
                 _isNetworkErrorShown.value = false
 
-            } catch (networkError: IOException) {
+            } catch (networkError: Exception) {
                 // Show a Toast error message and hide the progress bar.
+                Timber.e(networkError)
                 if (postList.value.isNullOrEmpty())
                     _eventNetworkError.value = true
             }

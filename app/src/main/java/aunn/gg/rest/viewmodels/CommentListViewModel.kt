@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import aunn.gg.rest.repository.CommentListRepository
 import kotlinx.coroutines.launch
-import java.io.IOException
+import timber.log.Timber
 
 class CommentListViewModel(context: Context, postId: String) :
     AbstractViewModel() {
@@ -25,8 +25,9 @@ class CommentListViewModel(context: Context, postId: String) :
                 _eventNetworkError.value = false
                 _isNetworkErrorShown.value = false
 
-            } catch (networkError: IOException) {
+            } catch (networkError: Exception) {
                 // Show a Toast error message and hide the progress bar.
+                Timber.e(networkError)
                 if (commentList.value.isNullOrEmpty())
                     _eventNetworkError.value = true
             }
